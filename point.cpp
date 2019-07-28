@@ -15,6 +15,18 @@ class Point {
         static void getcnt() {  // class method
             cout<<"Points: "<<cnt<<endl;
         }
+
+        Point operator+(const Point& p) {
+            Point tmp;
+            tmp.x = this->x + p.x;
+            tmp.y = this->y + p.y;
+            return tmp;
+        }
+
+         friend ostream &operator<<( ostream &output, const Point &p ) { 
+         output << "Point : ( " << p.x << " | " << p.y << " )";
+         return output;            
+      }
 };
 
 Point::Point() {
@@ -48,6 +60,9 @@ int main() {
 
     p2.myout();
 
+    p2 = p2 + p1;
+
+    cout<<p2<<endl;
     cout<<"Points: "<<Point::cnt<<endl;
     Point::getcnt();
     return 0;
