@@ -4,15 +4,15 @@ using namespace std;
 
 class Point {
     private:
-        int x;
+        int x;         // object variable
         int y;
     public:
-        static int cnt;
-        Point();
-        Point(int X, int Y): x(X), y(Y) { }; 
-        Point(const Point& obj);
+        static int cnt;     // Class variable
+        Point();              // default constructor
+        Point(int X, int Y): x(X), y(Y) { };  // set constructor
+        Point(const Point& obj);   // copy constructor
         void myout();
-        static void getcnt() {
+        static void getcnt() {  // class method
             cout<<"Points: "<<cnt<<endl;
         }
 };
