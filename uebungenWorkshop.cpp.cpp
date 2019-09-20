@@ -312,13 +312,264 @@ int main()
     return 0;
 }
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+#pragma once
+class Stack
+{
+private:
+	int werte[100];
+	int zeiger;
+public:
+	Stack();
+	~Stack();
+	void Push(int x);
+	int Pop();
+	void out();
+};
+
+#include "Stack.h"
+#include <iostream>
+
+Stack::Stack()
+{
+	zeiger = 0;
+}
+
+Stack::~Stack()
+{
+}
+
+void Stack::Push(int x)
+{
+	werte[zeiger++] = x;
+}
+
+int Stack::Pop()
+{
+	--zeiger;
+	int t = werte[zeiger];
+	return t;
+}
+
+void Stack::out()
+{
+	std::cout << "zeiger: " << zeiger << std::endl;
+	for (int i(0); i < zeiger; i++)
+		std::cout << " " << werte[i];
+	std::cout << std::endl;
+}
 
 
+#include "stdafx.h"
+#include <stdio.h>
+#include <iostream>
+#include "Stack.h"
+using namespace std;
+
+int main()
+{
+	Stack st;
+	st.Push(10); st.Push(12); st.Push(-23);st.Push(1);st.Push(2);st.Push(3);
+	st.out();
+	cout << "1: " << st.Pop() << endl;
+	cout << "2: " << st.Pop() << endl;
+	st.Push(255); st.Push(-239032);
+
+	cout << "3: " << st.Pop() << endl;
+	cout << "4: " << st.Pop() << endl;
+	st.out();
+    return 0;
+}
+///////////////////////////
+#pragma once
+#include <iostream>
+
+template<class T>
+class Stack
+{
+private:
+	T werte[100];
+	int zeiger;
+public:
+	Stack() {
+		zeiger = 0;
+	}
+	int Push(T const x) {
+		if (zeiger >= 100)
+			return -1;
+		werte[zeiger++] = x;
+		return 1;
+	}
+	T Pop() {
+		int t = 0;
+		if (zeiger > 0)
+		{
+			--zeiger;
+			t = werte[zeiger];
+		}
+		return t;
+	}
+	void out() {
+		std::cout << "zeiger: " << zeiger << std::endl;
+		for (int i(0); i < zeiger; i++)
+			std::cout << " " << werte[i];
+		std::cout << std::endl;
+	}
+	int isEmpty() {
+		if (zeiger > 0)
+			return 0;
+		return 1;
+	}
+};
+
+#include "stdafx.h"
+#include <stdio.h>
+#include <iostream>
+#include "Stack.h"
+
+using namespace std;
+
+int main()
+{
+	Stack<int> st;
+	st.Push(10); st.Push(12); st.Push(-23);st.Push(1);st.Push(2);st.Push(3);
+	st.out();
+	cout << "1: " << st.Pop() << endl;
+	cout << "2: " << st.Pop() << endl;
+	st.Push(255); st.Push(-239032);
+	st.out();
+	cout << "3: " << st.Pop() << endl;
+	cout << "4: " << st.Pop() << endl;
+	cout << "isEmpty: " << st.isEmpty() << endl;
+	cout << "4: " << st.Pop() << endl;
+	cout << "4: " << st.Pop() << endl;
+	cout << "4: " << st.Pop() << endl;
+	cout << "4: " << st.Pop() << endl;
+	cout << "4: " << st.Pop() << endl;
+	cout << "4: " << st.Pop() << endl;
+	cout << "isEmpty: " << st.isEmpty() << endl;
+	st.Push(-239032);
+
+	st.out();
+	return 0;
+}
+////////////////////////////////////////
+#pragma once
+#include <iostream>
+
+template<class T>
+class Stack
+{
+private:
+	T werte[100];
+	int zeiger;
+public:
+	Stack() {
+		zeiger = 0;
+	}
+	int Push(T const x) {
+		if (zeiger >= 100)
+			return -1;
+		werte[zeiger++] = x;
+		return 1;
+	}
+	T Pop() {
+		int t = 0;
+		if (zeiger > 0)
+		{
+			--zeiger;
+			t = werte[zeiger];
+		}
+		return t;
+	}
+	void out() {
+		std::cout << "zeiger: " << zeiger << std::endl;
+		for (int i(0); i < zeiger; i++)
+			std::cout << " " << werte[i];
+		std::cout << std::endl;
+	}
+	int isEmpty() {
+		if (zeiger > 0)
+			return 0;
+		return 1;
+	}
+};
 
 
+#include "Stack.h"
 
+using namespace std;
 
+int main()
+{
+	Stack<char> st;
 
+	string s = "Hallo Welt";
+	for (unsigned int i(0); i < s.length(); i++)
+		st.Push(s[i]);
+
+	for (unsigned int i(0); i < s.length(); i++)
+		cout << st.Pop();
+	cout << endl;
+	return 0;
+}
+
+////////////////////////////////////////////////////////7
+
+#pragma once
+#include <iostream>
+
+template<class T>
+class Queue
+{
+private:
+	T *werte;
+	int e, d;
+
+public:
+	Queue(int n) {
+		werte = new T[n];
+		e = 0; d = 0; 
+	}
+	int Enqueue(T const x) {
+		werte[e++] = x;
+		return 1;
+	}
+	T Dequeue() {
+		int t = 0;
+		t = werte[d++];
+		return t;
+	}
+	void out() {
+		std::cout << "e: " << e << "   d: "<<d<<std::endl;
+		for (int i(d); i < e; i++)
+			std::cout << " " << werte[i];
+		std::cout << std::endl;
+	}
+	int isEmpty() {
+		if ( e==d)
+			return 0;
+		return 1;
+	}
+};
+#include "stdafx.h"
+#include <stdio.h>
+#include <iostream>
+#include "Queue.h"
+
+using namespace std;
+
+int main()
+{
+	Queue<int> q(100);
+	q.Enqueue(23);q.Enqueue(24);q.Enqueue(25);
+
+	q.out();
+	q.Dequeue(); q.Enqueue(23);q.Enqueue(24);q.Enqueue(25);
+
+	q.out();
+	return 0;
+}
+///////////////////////////////////////////////
 
 
 
