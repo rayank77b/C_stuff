@@ -59,28 +59,16 @@ public:
 		return d;
 	}
 
-	Data* find(int n) 
+	bool have(int n) 
 	{
 		Data *tmp = header;
 		while (tmp != nullptr) 
 		{
 			if (tmp->Get() == n)
-				return tmp;
+				return true;
 			tmp = tmp->getNext();
-		}// nothing found or list is void
-		return tmp;
-	}
-
-	Data* findPrevious(Data *n) 
-	{
-		Data *tmp = header;
-		if (tmp == nullptr)  // list is void
-			return nullptr;
-		if (tmp->getNext() == nullptr) // list has only one element
-			return nullptr;
-		while (tmp->getNext() == n)
-			tmp = tmp->getNext();
-		return tmp;
+		}
+		return false;
 	}
 
 	void add(int n) 
@@ -134,6 +122,55 @@ public:
 		return false;
 	}
 
+	bool replace(int o, int n)
+	{
+		Data *tmp = header;
+		while (tmp != nullptr)
+		{
+			if (tmp->Get() == o)
+			{
+				tmp->Set(n);
+				return true;
+			}
+			tmp = tmp->getNext();
+		}
+		return false;
+	}
+
+	int size()
+	{
+		int s = 0;
+		Data *tmp = header;
+		while (tmp != nullptr)
+		{
+			s++;
+			tmp = tmp->getNext();
+		}
+		return s;
+	}
+
+	void sort()
+	{
+		if (size() > 1)
+		{
+			bool found = false;
+			Data *tmp = header;
+			while (tmp->getNext() != nullptr)
+			{
+				int wert = tmp->getNext()->Get();
+				if (wert < tmp->Get())
+				{
+					tmp->getNext()->Set(tmp->Get());
+					tmp->Set(wert);
+					found = true;
+				}
+				tmp = tmp->getNext();
+			}
+			if (found)
+				sort();
+		}
+	}
+
 	void debug(Data *prev)
 	{
 		Data *tmp = prev->getNext();
@@ -177,6 +214,8 @@ int main()
 
 	sl.print();
 	cout << "del(1): " << sl.del(1) << endl;
+	cout << "size: " << sl.size() << endl;
+	cout << "have(5)  : " << sl.have(5) << endl;
 	sl.add(1);
 	cout << "del(2): " << sl.del(2) << endl;
 	sl.print();
@@ -206,14 +245,27 @@ int main()
 	cout << "del(22): " << sl.del(22) << endl;
 	sl.print();
 
-	for (int i(0); i<10; i++)
+	for (int i(20); i>-5; i--)
 		sl.add(i);
+	cout << "size: " << sl.size() << endl;
 	sl.del(8);
 	sl.add(55);
 	sl.print();
+	cout << "have(100): " << sl.have(100) << endl;
+	cout << "have(5)  : " << sl.have(5) << endl;
 
+	sl.replace(5, 555);
+	sl.replace(0, 329);
+	sl.print();
+	cout << "size: " << sl.size() << endl;
+
+	cout << "\n#####################\n";
+	sl.print();
+	sl.sort();
+	sl.print();
 	return 0;
 }
+
 
 
 
