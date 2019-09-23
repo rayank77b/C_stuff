@@ -41,11 +41,17 @@ private:
 public:
 	SimpleList() 
 	{
-		header = nullptr;// nothing found or list is void
+		header = nullptr;
 	}
 	~SimpleList() 
 	{
-		// TODO: alle delete
+		Data *tmp = header;
+		while (tmp != nullptr)
+		{
+			Data *tmp2 = tmp;
+			tmp = tmp->getNext();
+			delete tmp2;
+		}
 	}
 
 	Data* getLast() 
