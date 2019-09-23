@@ -69,6 +69,77 @@ public:
 		}
 	}
 
+	bool have(int n)
+	{
+		Data *tmp = header;
+		while (tmp != nullptr)
+		{
+			if (tmp->Get() == n)
+				return true;
+			tmp = tmp->getNext();
+		}
+		return false;
+	}
+
+	int size()
+	{
+		int s = 0;
+		Data *tmp = header;
+		while (tmp != nullptr)
+		{
+			s++;
+			tmp = tmp->getNext();
+		}
+		return s;
+	}
+
+	Data* find(int n)
+	{
+		Data *tmp = header;
+		while (tmp != nullptr)
+		{
+			if (tmp->Get() == n)
+				return tmp;
+			tmp = tmp->getNext();
+		}
+		return tmp;
+	}
+
+	bool swap(Data *d1, Data *d2)
+	{
+		if ((d1 == nullptr) || (d2 == nullptr))
+			return false;
+		
+		Data *tmp_d1_prev = d1->getPrev();
+		Data *tmp_d1_next = d1->getNext();
+		Data *tmp_d2_prev = d2->getPrev();
+		Data *tmp_d2_next = d2->getNext();
+		
+		d2->setPrev(d1->getPrev());
+		d2->setNext(d1->getNext());
+
+		if (tmp_d2_prev != nullptr)
+			tmp_d2_prev->setNext(d1);
+		if (tmp_d2_next != nullptr)
+			tmp_d2_next->setPrev(d1);
+
+		d1->setPrev(tmp_d2_prev);
+		d1->setNext(tmp_d2_next);
+
+		if (tmp_d1_prev != nullptr)
+			tmp_d1_prev->setNext(d2);
+		if (tmp_d1_next != nullptr)
+			tmp_d1_next->setPrev(d2);
+
+		// header anpassen
+		if (header == d1)
+			header = d2;
+		else if (header == d2)
+			header = d1;
+
+		return true;
+	}
+
 	void add(int n)
 	{
 		Data *d = new Data(n);
@@ -138,6 +209,7 @@ public:
 	void print()
 	{
 		Data *tmp = header;
+		cout << "header: 0x" << header << endl;
 		if (tmp == nullptr)
 			cout << "void List\n";
 		while (tmp != nullptr)
@@ -149,7 +221,6 @@ public:
 		cout << "--------------------------------\n";
 	}
 };
-
 
 
 
@@ -185,7 +256,28 @@ int main()
 	dl.del(3);
 	dl.print();
 
-	
-	return 0;
+	cout << "have 5 : " << dl.have(5) << endl;
+	cout << "have -55 : " << dl.have(-55) << endl;
+	cout << "size : " << dl.size() << endl;
 
+	Data *d1 = dl.find(5);
+	Data *d2 = dl.find(-14);
+	Data *d3 = dl.find(18);
+	Data *d4 = dl.find(-239);
+	cout << d1->Get() << " " << d2->Get() << " " << d3->Get()  << endl;
+	cout << "0x" << d4 << endl;
+
+	cout << "-----------------------------------\n";
+	cout << "original\n";
+	dl.print();
+	dl.swap(d1, d2);
+	cout << "-----------------------------------\n";
+	cout << "swap ( 5, -14)\n";
+	dl.print();
+	dl.swap(d3, d2);
+	cout << "-----------------------------------\n";
+	cout << "swap ( 18, -14)\n";
+	dl.print();
+
+	return 0;
 }
