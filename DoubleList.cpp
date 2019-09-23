@@ -43,6 +43,7 @@ public:
 
 /////////////////////////
 // double list
+
 #pragma once
 #include <iostream>
 #include "Data.h"
@@ -112,25 +113,42 @@ public:
 		
 		Data *tmp_d1_prev = d1->getPrev();
 		Data *tmp_d1_next = d1->getNext();
+
 		Data *tmp_d2_prev = d2->getPrev();
 		Data *tmp_d2_next = d2->getNext();
 		
-		d2->setPrev(d1->getPrev());
-		d2->setNext(d1->getNext());
+		if (tmp_d1_next != d2) // element between
+		{
+			d2->setPrev(d1->getPrev());
+			d2->setNext(d1->getNext());
 
-		if (tmp_d2_prev != nullptr)
-			tmp_d2_prev->setNext(d1);
-		if (tmp_d2_next != nullptr)
-			tmp_d2_next->setPrev(d1);
+			if (tmp_d2_prev != nullptr)
+				tmp_d2_prev->setNext(d1);
+			if (tmp_d2_next != nullptr)
+				tmp_d2_next->setPrev(d1);
 
-		d1->setPrev(tmp_d2_prev);
-		d1->setNext(tmp_d2_next);
+			d1->setPrev(tmp_d2_prev);
+			d1->setNext(tmp_d2_next);
 
-		if (tmp_d1_prev != nullptr)
-			tmp_d1_prev->setNext(d2);
-		if (tmp_d1_next != nullptr)
-			tmp_d1_next->setPrev(d2);
+			if (tmp_d1_prev != nullptr)
+				tmp_d1_prev->setNext(d2);
+			if (tmp_d1_next != nullptr)
+				tmp_d1_next->setPrev(d2);
+		} 
+		else
+		{
+			d2->setPrev(d1->getPrev());
+			d2->setNext(d1);
 
+			if (tmp_d2_next != nullptr)
+				tmp_d2_next->setPrev(d1);
+
+			d1->setPrev(d2);
+			d1->setNext(tmp_d2_next);
+
+			if (tmp_d1_prev != nullptr)
+				tmp_d1_prev->setNext(d2);
+		}
 		// header anpassen
 		if (header == d1)
 			header = d2;
@@ -138,6 +156,29 @@ public:
 			header = d1;
 
 		return true;
+	}
+
+	void sort()
+	{
+		if (size() > 1)
+		{
+			bool found = false;
+			Data *tmp = header;
+			while (tmp->getNext() != nullptr)
+			{
+				int wert = tmp->getNext()->Get();
+				if (wert < tmp->Get())
+				{
+					//debug(tmp);
+					swap(tmp, tmp->getNext());
+					found = true;
+				}
+				else
+					tmp = tmp->getNext();
+			}
+			if (found)
+				sort();
+		}
 	}
 
 	void add(int n)
@@ -226,7 +267,6 @@ public:
 
 ////////////////////////////77
 // main
-
 #include "stdafx.h"
 #include <stdio.h>
 #include <iostream>
@@ -279,5 +319,14 @@ int main()
 	cout << "swap ( 18, -14)\n";
 	dl.print();
 
+	d1 = dl.find(-14);
+	d2 = dl.find(17);
+	dl.swap(d1, d2);
+	cout << "-----------------------------------\n";
+	cout << "swap ( -14, 17)\n";
+	dl.print();
+
+	dl.sort();
+	dl.print();
 	return 0;
 }
